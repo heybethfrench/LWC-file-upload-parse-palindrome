@@ -1,4 +1,6 @@
 public with sharing class FileUploadHelper {
+
+    //retrieves the document body of the file that was uploaded, and returns a List of Data Wrappers -- one for each palindrome
     @AuraEnabled(cacheable=true)
     public static List<PalWrapper> parseFileBody(String documentId){
         
@@ -21,17 +23,15 @@ public with sharing class FileUploadHelper {
 
         
         for(String pal : palindromes){
+            //creates data wrapper for letter counts
             List<abcWrapper> letterMap = createLetterMap(pal);
-            PalWrapper tempWrap = new PalWrapper(pal, letterMap);
-            palWrapperList.add(tempWrap);
-            System.debug(letterMap);
-            System.debug(tempWrap.palindrome);
-            System.debug(tempWrap.abcAnalysis);
-            
-        }
 
-        
+            //creates data wrapper for the palindrome
+            PalWrapper tempWrap = new PalWrapper(pal, letterMap);
+
+            palWrapperList.add(tempWrap);
             
+        }   
             return palWrapperList;
     }
 
@@ -52,20 +52,22 @@ public with sharing class FileUploadHelper {
         List<String> palCharList = palindrome.split('');
         String abc = 'abcdefghijklmnopqrstuvwxyz';
         List<String> abcList = abc.split('');
-        
+    
         Integer key = 0;
         
         for(String letter : abcList){
-
             Integer numOfTimes = 0;
-
+            
+            //compare the current loop letter from the abcList to the palindrome.  If the plaindrome contains that letter, count how many times that letter occurs within the palindrome
             if(palCharList.contains(letter)){
                 for(String s: palCharList){
                     if(s == letter){
                         numOfTimes = numOfTimes + 1;
                     }
                 }
-            }             
+            }
+            
+            //put the letter and the number of times it occurs in the palindrome in the abc wrapper
             abcWrapList.add(new abcWrapper(key, letter, numOfTimes));
             key = key + 1;
             
@@ -76,20 +78,18 @@ public with sharing class FileUploadHelper {
     }
 
     public class PalWrapper {
-		
 		@AuraEnabled 
 		public String palindrome {get;set;}
 		@AuraEnabled
 		public List<abcWrapper> abcAnalysis {get;set;}
      
-       
 		public PalWrapper(String thePalindrome, List<abcWrapper> theAbcAnalysis) {
-			
             this.palindrome = thePalindrome;
             this.abcAnalysis = theAbcAnalysis;
             
 		}
 	} 
+
     public class abcWrapper{
         @AuraEnabled
         public Integer abcWrapId {get;set;}
@@ -103,6 +103,5 @@ public with sharing class FileUploadHelper {
             this.key = theKey;
             this.value = theValue;
         }
-    
     }
 }

@@ -1,3 +1,20 @@
+This component is a standalone component that can be dropped into any Salesforce org.  The only thing it stores in Salesforce is the txt File.  It takes in a txt file that contains sentences separated by new lines, and then it checks then to see if they are palindromes.  Each palindrome is displayed with a character count analysis.
+
+#TODOS
+- 100% Code coverage for Apex Classes
+- Handle null values
+- Handle for and notify user when there are no palindromes
+- Handle for multiple files uploaded at one time
+- Handle for files of different doctypes
+- Potentially store the data in Salesforce and create dashboards/reports on different metrics
+- Clean up and refactor code for performance
+- Display letter count totals
+- Convert to datatable
+- Conditionally render the file upload input
+- Line 40 in FileUploadHelper, use only Regex
+- Try to get rid of nested for loops
+
+
 # Salesforce DX Project: Next Steps
 
 Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
