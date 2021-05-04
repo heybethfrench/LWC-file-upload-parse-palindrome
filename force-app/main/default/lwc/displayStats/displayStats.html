@@ -1,0 +1,58 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-horizontal_medium">
+            <div class="slds-section slds-is-open">
+                <template for:each={palobject} for:item="palindromeWrapper">
+                    <h3 key={palindromeWrapper.palindrome} class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small">{palindromeWrapper.palindrome}</span>
+                    </h3>
+                    <div key={palindromeWrapper.palindrome} aria-hidden="false" class="slds-section__content slds-p-around_small">
+                        
+                    <table key={palindromeWrapper.index} class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <template for:each={palindromeWrapper.abcAnalysis} for:item="object">                        
+                                    <th key={object.abcWrapId}>{object.key}</th>
+                                </template>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr class="slds-hint-parent">
+                                <template for:each={palindromeWrapper.abcAnalysis} for:item="object">
+                                <td key={object.abcWrapId}>{object.value}</td>
+                            </template>
+                            </tr>
+                        </tbody> 
+                        
+                    </table>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
