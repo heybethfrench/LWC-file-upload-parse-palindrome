@@ -21,7 +21,6 @@ public with sharing class FileUploadHelper {
             }     
         }
 
-        
         for(String pal : palindromes){
             //creates data wrapper for letter counts
             List<abcWrapper> letterMap = createLetterMap(pal);
@@ -39,11 +38,7 @@ public with sharing class FileUploadHelper {
     public static Boolean isPalindrome(String s){
         String newString = s.replaceAll('[^a-zA-Z0-9\\s+]', '').toLowerCase().deleteWhitespace();
         String revString = newString.reverse();
-        if(newString == revString){
-            return true;
-        } else {
-            return false;
-        }
+        return newString == revString;
     }
 
     //function that creates a Map of statistical data re: letter occurance in any given string

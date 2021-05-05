@@ -13,7 +13,7 @@ export default class FileUploadExample extends LightningElement {
         
         const DocIdEvent = new CustomEvent('docidsend', {detail : {value : uploadedFiles[0].documentId}});
         this.dispatchEvent(DocIdEvent);
-        console.log('event dispatched');
+
     }
     
 }
