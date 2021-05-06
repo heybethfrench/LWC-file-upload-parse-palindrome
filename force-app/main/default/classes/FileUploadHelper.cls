@@ -10,28 +10,19 @@ public with sharing class FileUploadHelper {
                                     AND IsLatest = true LIMIT 1];
 
         List<String> docBody = myContent.VersionData.toString().split('\n');
-        List<String> palindromes = new List<String>();
         List<PalWrapper> palWrapperList = new List<PalWrapper>(); 
 
-        for(String s : docBody){ 
-            //remove special characters, whitespace, and make all letters lower case
-            //only returns strings that are palindromes
-            if(isPalindrome(s)){
-                palindromes.add(s);
-            }     
+        if(docBody != null){
+            for(String sentence : docBody){ 
+                Integer key = 0;
+                if(isPalindrome(sentence)){
+                    List<abcWrapper> letterCounts = createLetterMap(sentence.replaceAll('[^a-zA-Z0-9\\s+]', '').toLowerCase().deleteWhitespace());
+                    palWrapperList.add(new PalWrapper(key, sentence, letterCounts));
+                    key = key + 1;
+                }     
+            }
         }
-
-        for(String pal : palindromes){
-            //creates data wrapper for letter counts
-            List<abcWrapper> letterMap = createLetterMap(pal);
-
-            //creates data wrapper for the palindrome
-            PalWrapper tempWrap = new PalWrapper(pal, letterMap);
-
-            palWrapperList.add(tempWrap);
-            
-        }   
-            return palWrapperList;
+        return palWrapperList;
     }
 
     //function that determines if a string is a palindrome
@@ -43,29 +34,28 @@ public with sharing class FileUploadHelper {
 
     //function that creates a Map of statistical data re: letter occurance in any given string
     public static List<abcWrapper> createLetterMap(String palindrome){
+        System.debug('in the letter map function');
         List<abcWrapper> abcWrapList = new List<abcWrapper>();
+        Map<String, Integer> letterMap = new Map<String, Integer>(); 
         List<String> palCharList = palindrome.split('');
-        String abc = 'abcdefghijklmnopqrstuvwxyz';
-        List<String> abcList = abc.split('');
-    
-        Integer key = 0;
-        
+        List<String> abcList = 'abcdefghijklmnopqrstuvwxyz'.split('');        
+          
+
         for(String letter : abcList){
-            Integer numOfTimes = 0;
-            
-            //compare the current loop letter from the abcList to the palindrome.  If the plaindrome contains that letter, count how many times that letter occurs within the palindrome
-            if(palCharList.contains(letter)){
-                for(String s: palCharList){
-                    if(s == letter){
-                        numOfTimes = numOfTimes + 1;
-                    }
-                }
+            letterMap.put(letter, 0);
+        }
+
+        for(String palChar : palCharList){
+            if(letterMap.get(palChar) == null){
+                letterMap.put(palChar, 1);
             }
+            letterMap.put(palChar, letterMap.get(palchar) +1);
             
-            //put the letter and the number of times it occurs in the palindrome in the abc wrapper
-            abcWrapList.add(new abcWrapper(key, letter, numOfTimes));
-            key = key + 1;
-            
+        }
+
+        Integer Id = 0;
+        for(String key : letterMap.keySet()){
+            abcWrapList.add(new abcWrapper(Id, key, letterMap.get(key)));
         }
 
         return abcWrapList;
@@ -77,8 +67,11 @@ public with sharing class FileUploadHelper {
 		public String palindrome {get;set;}
 		@AuraEnabled
 		public List<abcWrapper> abcAnalysis {get;set;}
+        @AuraEnabled
+		public Integer wrapperKey {get;set;}
      
-		public PalWrapper(String thePalindrome, List<abcWrapper> theAbcAnalysis) {
+		public PalWrapper(Integer theKey, String thePalindrome, List<abcWrapper> theAbcAnalysis) {
+            this.wrapperKey = theKey;
             this.palindrome = thePalindrome;
             this.abcAnalysis = theAbcAnalysis;
             
