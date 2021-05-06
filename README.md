@@ -3,6 +3,7 @@ This component is a standalone component that can be dropped into any Salesforce
 #TODOS
 - 100% Code coverage for Apex Classes
 - Handle null values
+- Add try catch blocks
 - Handle for and notify user when there are no palindromes
 - Handle for multiple files uploaded at one time
 - Handle for files of different doctypes
@@ -12,7 +13,10 @@ This component is a standalone component that can be dropped into any Salesforce
 - Convert to datatable
 - Conditionally render the file upload input
 - Line 40 in FileUploadHelper, use only Regex
-- Try to get rid of nested for loops
+
+
+#DONE
+- Removed nested for loops
 
 
 # Salesforce DX Project: Next Steps

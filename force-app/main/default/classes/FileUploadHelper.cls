@@ -12,7 +12,7 @@ public with sharing class FileUploadHelper {
         List<String> docBody = myContent.VersionData.toString().split('\n');
         List<PalWrapper> palWrapperList = new List<PalWrapper>(); 
 
-        if(docBody != null){
+        if(docBody != null || docBody.isEmpty()){
             for(String sentence : docBody){ 
                 Integer key = 0;
                 if(isPalindrome(sentence)){
@@ -34,23 +34,22 @@ public with sharing class FileUploadHelper {
 
     //function that creates a Map of statistical data re: letter occurance in any given string
     public static List<abcWrapper> createLetterMap(String palindrome){
-        System.debug('in the letter map function');
         List<abcWrapper> abcWrapList = new List<abcWrapper>();
         Map<String, Integer> letterMap = new Map<String, Integer>(); 
         List<String> palCharList = palindrome.split('');
         List<String> abcList = 'abcdefghijklmnopqrstuvwxyz'.split('');        
           
-
         for(String letter : abcList){
             letterMap.put(letter, 0);
         }
 
-        for(String palChar : palCharList){
-            if(letterMap.get(palChar) == null){
-                letterMap.put(palChar, 1);
-            }
+        if(palCharList != null || !palCharList.isEmpty()){
+            for(String palChar : palCharList){
+                if(letterMap.get(palChar) == null){
+                    letterMap.put(palChar, 1);
+                }
             letterMap.put(palChar, letterMap.get(palchar) +1);
-            
+            }
         }
 
         Integer Id = 0;
